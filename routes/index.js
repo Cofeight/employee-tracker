@@ -33,44 +33,36 @@ const startTracker = async () => {
             name: 'action',
             type: 'list',
             message: 'Please choose from the following options: ',
-            choices: [
-                "View all Roles",
-                "View all Employees",
-                "View all Departments",
-                "Add a Role",
-                "Add an Employee",
-                "Add a Department",
-                "Update an Employee Role",
-            ]
+            choices: ["View all Roles","View all Employees","View all Departments","Add a Role","Add an Employee","Add a Department","Update an Employee Role",]
         });
 
         switch (answer.action) {
             case 'View all Roles':
-                roleView();
+                viewAllRoles();
                 break;
             
             case 'View all Employees':
-                employeeView();
+                viewAllEmployees();
                 break;
 
             case 'View all Departments':
-                departmentView();
+                viewAllDepartments();
                 break;
 
             case 'Add a Role':
-                roleAdd();
+                addARole();
                 break;
 
             case 'Add an Employee':
-                employeeAdd();
+                addAnEmployee();
                 break;
 
             case 'Add a Department':
-                departmentAdd();
+                addADepartment();
                 break;
 
             case 'Update an Employee Role':
-                employeeUpdate();
+                updateEmployeeRole();
                 break;
         };
     } catch(err) {
@@ -79,7 +71,7 @@ const startTracker = async () => {
     };
 }
 
-const departmentView = async () => {
+const viewAllDepartments = async () => {
     console.log('Department View');
     try {
         let query = 'SELECT * FROM department';
@@ -96,7 +88,7 @@ const departmentView = async () => {
     };
 }
 
-const roleView = async () => {
+const viewAllRoles = async () => {
     try {
         console.log('Role View');
 
@@ -114,7 +106,7 @@ const roleView = async () => {
     };
 }
 
-const employeeView = async () => {
+const viewAllEmployees = async () => {
     console.log('Employee View');
     try {
         let query = 'SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id, role.salary, role.department_id FROM employee left JOIN role ON employee.role_id = role.id';
@@ -131,7 +123,7 @@ const employeeView = async () => {
     };
 }
 
-const departmentAdd = async () => {
+const addADepartment = async () => {
     try {
         console.log('Department Add');
 
@@ -158,7 +150,7 @@ const departmentAdd = async () => {
     };
 }
 
-const roleAdd = async () => {
+const addARole = async () => {
     try {
         console.log('Role Add');
 
@@ -209,7 +201,7 @@ const roleAdd = async () => {
     };
 }
 
-const employeeAdd = async () => {
+const addAnEmployee = async () => {
     try {
         console.log('Employee Add');
 
@@ -268,7 +260,7 @@ const employeeAdd = async () => {
     };
 }
 
-const employeeUpdate = async () => {
+const updateEmployeeRole = async () => {
     try {
         console.log('Employee Update');
         
