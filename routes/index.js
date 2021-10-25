@@ -19,8 +19,12 @@ connection.connect(err => {
 });
 
 
-console.table(
-    "\n~~~~~~~~~~~EMPLOYEE TRACKER 9000~~~~~~~~~~~~~~\n"
+console.table(            
+    "/////////////////////////////////////////////////",      
+    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    "--------------EMPLOYEE TRACKER 9000--------------",
+    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    "/////////////////////////////////////////////////",
 )
 
 const firstAction = async () => {
@@ -37,7 +41,6 @@ const firstAction = async () => {
                 "Add an Employee",
                 "Add a Department",
                 "Update an Employee Role",
-                "Exit"
             ]
         });
 
@@ -58,11 +61,11 @@ const firstAction = async () => {
                 roleAdd();
                 break;
 
-            case 'Add Employees':
+            case 'Add an Employee':
                 employeeAdd();
                 break;
 
-            case 'Add Departments':
+            case 'Add a Department':
                 departmentAdd();
                 break;
 
@@ -114,7 +117,7 @@ const roleView = async () => {
 const employeeView = async () => {
     console.log('Employee View');
     try {
-        let query = 'SELECT * FROM employee';
+        let query = 'SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id, role.salary, role.department_id FROM employee left JOIN role ON employee.role_id = role.id';
         connection.query(query, function (err, res) {
             if (err) throw err;
             let employeeArray = [];
@@ -132,20 +135,22 @@ const departmentAdd = async () => {
     try {
         console.log('Department Add');
 
-        let answer = await inquirer.prompt([
+        inquirer.prompt([
             {
                 name: 'deptName',
                 type: 'input',
                 message: 'Name of the new department?'
             }
-        ]);
+        ]).then(answer => {
 
-        let result = await connection.query("INSERT INTO department SET ?", {
-            department_name: answer.deptName
-        });
+            connection.query("INSERT INTO department SET ?", {
+                name: answer.deptName
+            });
+    
+            console.log(`${answer.deptName} has been added successfully to departments.\n`)
+            firstAction();
+        })
 
-        console.log(`${answer.deptName} has been added successfully to departments.\n`)
-        firstAction();
 
     } catch (err) {
         console.log(err);
