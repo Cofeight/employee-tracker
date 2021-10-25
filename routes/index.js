@@ -15,7 +15,7 @@ connection.query = util.promisify(connection.query);
 
 connection.connect(err => {
     if (err) throw err;
-    firstAction();
+    startTracker();
 });
 
 
@@ -27,7 +27,7 @@ console.table(
     "/////////////////////////////////////////////////",
 )
 
-const firstAction = async () => {
+const startTracker = async () => {
     try {
         let answer = await inquirer.prompt({
             name: 'action',
@@ -75,7 +75,7 @@ const firstAction = async () => {
         };
     } catch(err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
 
@@ -88,11 +88,11 @@ const departmentView = async () => {
             let departmentArray = [];
             res.forEach(department => departmentArray.push(department));
             console.table(departmentArray);
-            firstAction();
+            startTracker();
         });
     } catch (err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
 
@@ -106,11 +106,11 @@ const roleView = async () => {
             let roleArray = [];
             res.forEach(role => roleArray.push(role));
             console.table(roleArray);
-            firstAction();
+            startTracker();
         });
     } catch (err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
 
@@ -123,11 +123,11 @@ const employeeView = async () => {
             let employeeArray = [];
             res.forEach(employee => employeeArray.push(employee));
             console.table(employeeArray);
-            firstAction();
+            startTracker();
         });
     } catch (err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
 
@@ -148,13 +148,13 @@ const departmentAdd = async () => {
             });
     
             console.log(`${answer.deptName} has been added successfully to departments.\n`)
-            firstAction();
+            startTracker();
         })
 
 
     } catch (err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
 
@@ -201,11 +201,11 @@ const roleAdd = async () => {
         })
 
         console.log(`${answer.title} role has been added successfully.\n`)
-        firstAction();
+        startTracker();
 
     } catch (err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
 
@@ -260,11 +260,11 @@ const employeeAdd = async () => {
         });
 
         console.log(`${answer.firstName} ${answer.lastName} has been added successfully.\n`);
-        firstAction();
+        startTracker();
 
     } catch (err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
 
@@ -307,10 +307,10 @@ const employeeUpdate = async () => {
         let result = await connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: roleSelection.role }, { id: employeeSelection.employee }]);
 
         console.log(`The role was successfully updated.\n`);
-        firstAction();
+        startTracker();
 
     } catch (err) {
         console.log(err);
-        firstAction();
+        startTracker();
     };
 }
