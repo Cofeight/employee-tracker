@@ -1,3 +1,7 @@
+--TIP-- Use mySQL Workbench for sql testing
+--TIP-- Easier to populate and make adjustments
+
+--populates departement table (see /db/schema.sql)
 INSERT INTO department (name)
 VALUES
 ('Sales / Marketing'),
@@ -5,6 +9,7 @@ VALUES
 ('Operations'),
 ('Payroll / Accounting');
 
+--populates role table (see /db/schema.sql)
 INSERT INTO role (title, salary, department_id)
 VALUES
 ('Marketing Director', 95000, 1),
@@ -16,6 +21,7 @@ VALUES
 ('Project Lead', 60000, 3),
 ('Junior Developer', 70000, 2);
 
+--populates employee table (see /db/schema.sql)
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
 ('Robert', 'Diggs', 1, null),
@@ -26,3 +32,6 @@ VALUES
 ('Corey', 'Woods', 6, 2),
 ('Elgin', 'Turner', 7, 3),
 ('Darryl', 'Hill', 8, 4);
+
+--Joins specific columns from employee both employee and role tables
+SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id, role.salary, role.department_id FROM employee left JOIN role ON employee.role_id = role.id;

@@ -1,8 +1,9 @@
- --deletes any pre-existing database by that name
+--deletes any pre-existing database by that name
 --creates new database by that name
 DROP DATABASE IF EXISTS employee_db;
 CREATE DATABASE employee_db;
 
+--selects database as active
 USE employee_db;
 
 --department table parameters
