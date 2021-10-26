@@ -21,7 +21,6 @@ const connection = mysql.createConnection({
 connection.query = util.promisify(connection.query);
 
 //Upon confirmation of mysql server connection,
-    //
     //Initiates startTracker async function
 connection.connect(err => {
     if (err) throw err;
@@ -168,12 +167,12 @@ const addARole = async () => {
             {
                 name: 'title',
                 type: 'input',
-                message: 'What is the title of this new role?'
+                message: 'What is the title of this new role? '
             },
             {
                 name: 'salary',
                 type: 'input',
-                message: 'What salary does this role pay?'
+                message: 'What is the salary of this new role? '
             },
             {
                 name: 'departmentId',
@@ -184,7 +183,7 @@ const addARole = async () => {
                         value: departmentId.id
                     }
                 }),
-                message: 'What department ID is this role associated with?',
+                message: 'What is the department ID of this new role? ',
             }
         ]);
         let chosenDepartment;
@@ -215,12 +214,12 @@ const addAnEmployee = async () => {
             {
                 name: 'firstName',
                 type: 'input',
-                message: 'First name of this Employee?'
+                message: "What is the employee's first name? "
             },
             {
                 name: 'lastName',
                 type: 'input',
-                message: 'Last name of this Employee?'
+                message: "What is the employee's last name? "
             },
             {
                 name: 'employeeRoleId',
@@ -231,7 +230,7 @@ const addAnEmployee = async () => {
                         value: role.id
                     }
                 }),
-                message: "ID role of this employee?",
+                message: "What is the employee's Role ID? ",
             },
             {
                 name: 'employeeManagerId',
@@ -242,7 +241,7 @@ const addAnEmployee = async () => {
                         value: manager.id
                     }
                 }),
-                message: "ID of this employee's manager?"
+                message: "What is the ID of this employee's manager? "
             }
         ])
 
@@ -265,9 +264,7 @@ const addAnEmployee = async () => {
 const updateEmployeeRole = async () => {
     try {
         console.log('Updating Employee Role');
-        
         let employees = await connection.query("SELECT * FROM employee");
-
         let employeeSelection = await inquirer.prompt([
             {
                 name: 'employee',
@@ -278,7 +275,7 @@ const updateEmployeeRole = async () => {
                         value: employeeName.id
                     }
                 }),
-                message: 'Please choose an employee to update.'
+                message: 'Please choose an employee to update. '
             }
         ]);
 
@@ -293,7 +290,7 @@ const updateEmployeeRole = async () => {
                         value: roleName.id
                     }
                 }),
-                message: 'Please select the role to update the employee with.'
+                message: 'Please select the role to update the employee with. '
             }
         ]);
         let result = await connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: roleSelection.role }, { id: employeeSelection.employee }]);
