@@ -35,19 +35,19 @@ connection.connect(err => {
 console.table(            
     "/////////////////////////////////////////////////",      
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-    "--------------EMPLOYEE TRACKER 9000--------------",
+    "              EMPLOYEE TRACKER 9000              ",
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
     "/////////////////////////////////////////////////",
 )
 
-//Defines startTracker async function
+//Defines startTracker async/await function
     //Uses try statement
         //Initiaties inquirer via .prompt
             //Presents user with scrollable choices
         //Uses switch cases to cycle through user choices via Inquirer
     //Uses catch statement for any error
     //Logs any error
-//Initiates startTracker async function
+//Initiates startTracker async/await function
 
 const startTracker = async () => {
     try {
@@ -55,7 +55,7 @@ const startTracker = async () => {
             name: 'action',
             type: 'list',
             message: 'Please choose from the following options: ',
-            choices: ["View all Departments","View all Roles","View all Employees","Add a Department","Add a Role","Add an Employee","Update an Employee Role",]
+            choices: ["View all Departments","View all Roles","View all Employees","Add a Department","Add a Role","Add an Employee","Update an Employee Role"]
         });
 
         switch (answer.action) {
@@ -86,7 +86,7 @@ const startTracker = async () => {
 
             case 'Update an Employee Role':
                 updateEmployeeRole();
-                break;
+                break;                 
         };
     } catch(err) {
         console.log(err);
@@ -100,7 +100,6 @@ const viewAllDepartments = async () => {
         let query = 'SELECT * FROM department';
         connection.query(query, function (err, res) {
             if (err) throw err;
-            //
             let departmentArray = [];
             res.forEach(department => departmentArray.push(department));
             console.table(departmentArray);
