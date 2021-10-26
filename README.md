@@ -23,7 +23,7 @@
     npm init, npm i mysql2, npm i inquirer, npm i ctable, npm i util, node index.js
 
 ## Usage Information
-    ![gif-in-action](https://github.com/Cofeight/employee-tracker/blob/main/assets/cof-employee-tracker.gif?raw=true)
+   ![](https://github.com/Cofeight/employee-tracker/blob/main/assets/cof-employee-tracker.gif?raw=true)
 
 ## License
     Eclipse
