@@ -1,8 +1,14 @@
+//Established required packages
+    //Mysql for server connection and performing queries
+    //Inquirer for CL inquiry/user interaction
+    //cTable for printing Mysql rows in the console
+    //Util for .promisify function
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 const util = require('util');
 
+//creates server connection with predefined routes
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -11,14 +17,18 @@ const connection = mysql.createConnection({
     database: 'employee_db'
 });
 
+//establishes a callback with promisify for server connection
 connection.query = util.promisify(connection.query);
 
+//Upon confirmation of mysql server connection,
+    //
+    //Initiates startTracker async function
 connection.connect(err => {
     if (err) throw err;
     startTracker();
 });
 
-
+//displays "LOGO" of CL application via the cTable package
 console.table(            
     "/////////////////////////////////////////////////",      
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
@@ -27,17 +37,24 @@ console.table(
     "/////////////////////////////////////////////////",
 )
 
-//startTrackerstarts the inquirer prompt
+//startTracker async function defined and starts the inquirer prompt
+
 const startTracker = async () => {
     try {
         let answer = await inquirer.prompt({
             name: 'action',
             type: 'list',
             message: 'Please choose from the following options: ',
-            choices: ["View all Roles","View all Employees","View all Departments","Add a Role","Add an Employee","Add a Department","Update an Employee Role",]
+            choices: ["View all Departments","View all Roles","View all Employees","Add a Department","Add a Role","Add an Employee","Update an Employee Role",]
         });
 
+        //Uses switch cases to cycle through user choices via Inquirer
         switch (answer.action) {
+            
+            case 'View all Departments':
+                viewAllDepartments();
+                break;
+
             case 'View all Roles':
                 viewAllRoles();
                 break;
@@ -45,9 +62,9 @@ const startTracker = async () => {
             case 'View all Employees':
                 viewAllEmployees();
                 break;
-
-            case 'View all Departments':
-                viewAllDepartments();
+             
+            case 'Add a Department':
+                addADepartment();
                 break;
 
             case 'Add a Role':
@@ -56,10 +73,6 @@ const startTracker = async () => {
 
             case 'Add an Employee':
                 addAnEmployee();
-                break;
-
-            case 'Add a Department':
-                addADepartment();
                 break;
 
             case 'Update an Employee Role':
@@ -72,9 +85,27 @@ const startTracker = async () => {
     };
 }
 
+const viewAllDepartments = async () => {
+    console.log('Viewing All Departments');
+    try {
+        let query = 'SELECT * FROM department';
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            //
+            let departmentArray = [];
+            res.forEach(department => departmentArray.push(department));
+            console.table(departmentArray);
+            startTracker();
+        });
+    } catch (err) {
+        console.log(err);
+        startTracker();
+    };
+}
+
 const viewAllRoles = async () => {
     try {
-        console.log('Role View');
+        console.log('Viewing All Roles');
 
         let query = 'SELECT * FROM role';
         connection.query(query, function (err, res) {
@@ -91,7 +122,7 @@ const viewAllRoles = async () => {
 }
 
 const viewAllEmployees = async () => {
-    console.log('Employee View');
+    console.log('Viewing All Employees');
     try {
         let query = 'SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id, role.salary, role.department_id FROM employee left JOIN role ON employee.role_id = role.id';
         connection.query(query, function (err, res) {
@@ -107,27 +138,9 @@ const viewAllEmployees = async () => {
     };
 }
 
-const viewAllDepartments = async () => {
-    console.log('Department View');
-    try {
-        let query = 'SELECT * FROM department';
-        connection.query(query, function (err, res) {
-            if (err) throw err;
-            let departmentArray = [];
-            res.forEach(department => departmentArray.push(department));
-            console.table(departmentArray);
-            startTracker();
-        });
-    } catch (err) {
-        console.log(err);
-        startTracker();
-    };
-}
-
 const addADepartment = async () => {
     try {
-        console.log('Department Add');
-
+        console.log('Adding A Department');
         inquirer.prompt([
             {
                 name: 'deptName',
@@ -135,16 +148,12 @@ const addADepartment = async () => {
                 message: 'Name of the new department?'
             }
         ]).then(answer => {
-
             connection.query("INSERT INTO department SET ?", {
                 name: answer.deptName
             });
-    
             console.log(`${answer.deptName} has been added successfully to departments.\n`)
             startTracker();
         })
-
-
     } catch (err) {
         console.log(err);
         startTracker();
@@ -153,10 +162,8 @@ const addADepartment = async () => {
 
 const addARole = async () => {
     try {
-        console.log('Role Add');
-
+        console.log('Adding A Role');
         let departments = await connection.query("SELECT * FROM department");
-
         let answer = await inquirer.prompt([
             {
                 name: 'title',
@@ -180,7 +187,6 @@ const addARole = async () => {
                 message: 'What department ID is this role associated with?',
             }
         ]);
-        
         let chosenDepartment;
         for (i = 0; i < departments.length; i++) {
             if(departments[i].department_id === answer.choice) {
@@ -192,10 +198,8 @@ const addARole = async () => {
             salary: answer.salary,
             department_id: answer.departmentId
         })
-
         console.log(`${answer.title} role has been added successfully.\n`)
         startTracker();
-
     } catch (err) {
         console.log(err);
         startTracker();
@@ -204,12 +208,9 @@ const addARole = async () => {
 
 const addAnEmployee = async () => {
     try {
-        console.log('Employee Add');
-
+        console.log('Adding An Employee');
         let roles = await connection.query("SELECT * FROM role");
-
         let managers = await connection.query("SELECT * FROM employee");
-
         let answer = await inquirer.prompt([
             {
                 name: 'firstName',
@@ -263,7 +264,7 @@ const addAnEmployee = async () => {
 
 const updateEmployeeRole = async () => {
     try {
-        console.log('Employee Update');
+        console.log('Updating Employee Role');
         
         let employees = await connection.query("SELECT * FROM employee");
 
@@ -282,7 +283,6 @@ const updateEmployeeRole = async () => {
         ]);
 
         let roles = await connection.query("SELECT * FROM role");
-
         let roleSelection = await inquirer.prompt([
             {
                 name: 'role',
@@ -296,12 +296,9 @@ const updateEmployeeRole = async () => {
                 message: 'Please select the role to update the employee with.'
             }
         ]);
-
         let result = await connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: roleSelection.role }, { id: employeeSelection.employee }]);
-
         console.log(`The role was successfully updated.\n`);
         startTracker();
-
     } catch (err) {
         console.log(err);
         startTracker();

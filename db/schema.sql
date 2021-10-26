@@ -32,3 +32,16 @@ CREATE TABLE employee (
     FOREIGN KEY (manager_id) REFERENCES employee(id)
 );
 
+--NOTES
+
+--I found it significantly easier to run this through mySQL Workbench
+--Copy & Paste from Schema/Seeds files
+--Run them through line by line during inital creating and populating
+--Once all tables created and populated
+--Rinse & repeat as needed to reset data tables
+
+--CHALLENGES
+
+--I strugged with the join command for the employee table
+--Found success with tutor after defining all columns to include
+--Resolved any potential syntax errors

@@ -35,3 +35,9 @@ VALUES
 
 --Joins specific columns from employee both employee and role tables
 SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id, role.salary, role.department_id FROM employee left JOIN role ON employee.role_id = role.id;
+
+--NOTES
+--THIS JOIN PROCESS WAS A PAIN
+
+--TODO: refactor this with sequelize
+
