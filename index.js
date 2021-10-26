@@ -9,6 +9,8 @@ const cTable = require('console.table');
 const util = require('util');
 
 //creates server connection with predefined routes
+//TODO: REFACTORING ~~~ Look into username/password encryption
+//Use .env file for associating a key,value with login information (npm i dotenv; DB_())
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -28,6 +30,8 @@ connection.connect(err => {
 });
 
 //displays "LOGO" of CL application via the cTable package
+//TODO: REFACTORING ~~~ look into ascii-art to provide more styiling within the CLI
+
 console.table(            
     "/////////////////////////////////////////////////",      
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
@@ -36,7 +40,14 @@ console.table(
     "/////////////////////////////////////////////////",
 )
 
-//startTracker async function defined and starts the inquirer prompt
+//Defines startTracker async function
+    //Uses try statement
+        //Initiaties inquirer via .prompt
+            //Presents user with scrollable choices
+        //Uses switch cases to cycle through user choices via Inquirer
+    //Uses catch statement for any error
+    //Logs any error
+//Initiates startTracker async function
 
 const startTracker = async () => {
     try {
@@ -47,7 +58,6 @@ const startTracker = async () => {
             choices: ["View all Departments","View all Roles","View all Employees","Add a Department","Add a Role","Add an Employee","Update an Employee Role",]
         });
 
-        //Uses switch cases to cycle through user choices via Inquirer
         switch (answer.action) {
             
             case 'View all Departments':
