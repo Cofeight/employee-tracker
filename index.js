@@ -42,7 +42,7 @@ console.table(
 
 //Defines startTracker async/await function
     //Uses try statement
-        //Initiaties inquirer via .prompt
+        //Initiaties via inquirer.prompt
             //Presents user with scrollable choices
         //Uses switch cases to cycle through user choices via Inquirer
     //Uses catch statement for any error
